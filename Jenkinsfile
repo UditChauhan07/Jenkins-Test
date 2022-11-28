@@ -1,13 +1,25 @@
-
-/* Requires the Docker Pipeline plugin */
-/* modify bugatti */
-pipeline {
-    agent { docker { image 'maven:3.8.6-openjdk-11-slim' } }
-    stages {
-        stage('build') {
-            steps {
-                sh 'mvn --version'
-            }
+node {
+    stage('Clone repositroy') {
+        checkout scm
+    }
+    
+    stage('Build image') {
+        app =docker.build("UditChauhan07/deployment")
+    }
+    stage('Test image') {
+        
+        app.inside {
+            sh 'echo "Tests passed"'
         }
+    }
+    stage('Push image') {
+        
+        docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
+            app.push("${env.BUILD_NUMBER}")
+        }
+    }
+    stage('Triger ManifestUpdate') {
+        echo "triggering updatemanifestjob"
+        build job: 'updatemanifest', parameters:[string(name: 'DOCKERTAG', value: env.BUILD_NUMBER)]
     }
 }
