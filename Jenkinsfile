@@ -11,7 +11,7 @@ node {
     //     app.inside {
     //         sh 'echo "Tests passed"'
     //     }
-    }
+    // }
     stage('Push image') {
         
            withDockerRegistry([ credentialsId: "uditchauhan07", url: "https://hub.docker.com/" ]) {
