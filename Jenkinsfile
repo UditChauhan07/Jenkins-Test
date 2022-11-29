@@ -14,8 +14,8 @@ node {
     }
     stage('Push image') {
         
-        docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
-            app.push("${env.BUILD_NUMBER}")
+           withDockerRegistry([ credentialsId: "uditchauhan07", url: "https://hub.docker.com/" ]) {
+        dockerImage.push()
         }
     }
     stage('Triger ManifestUpdate') {
@@ -23,3 +23,4 @@ node {
         build job: 'updatemanifest', parameters:[string(name: 'DOCKERTAG', value: env.BUILD_NUMBER)]
     }
 }
+
