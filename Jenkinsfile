@@ -4,7 +4,7 @@ node {
     }
     
     stage('Build image') {
-        app =docker.build("docker pull uditchauhan07/pipeline")
+        app =docker.build("ubuntu")
     }
     stage('Test image') {
         
