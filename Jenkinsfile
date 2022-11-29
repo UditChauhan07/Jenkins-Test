@@ -4,7 +4,7 @@ node {
     }
     
     stage('Build image') {
-        app =docker.build("UditChauhan07/deployment")
+        app =docker.build("docker pull uditchauhan07/pipeline")
     }
     stage('Test image') {
         
